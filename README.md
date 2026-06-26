@@ -1,5 +1,9 @@
 # WeChat Observatory
 
+## 友链
+
+- [LINUX DO 社区](https://linux.do/)
+
 ## 截图
 
 ### Web 管理台
