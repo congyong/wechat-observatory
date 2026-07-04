@@ -92,15 +92,18 @@ jobs:
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
           BUILD_TYPE: ${{ steps.build_type.outputs.type }}
         run: |
+          echo "=== Build environment ==="
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          java -version 2>&1
+          ls -la gradle/wrapper/
+          echo ""
           if [ "$BUILD_TYPE" = "release" ] && [ "${{ steps.keystore.outputs.exists }}" = "true" ]; then
-            ./gradlew assembleRelease
+            ./gradlew assembleRelease --info --stacktrace 2>&1
           elif [ "$BUILD_TYPE" = "release" ] && [ "${{ steps.keystore.outputs.exists }}" = "false" ]; then
-            echo "⚠️  No keystore provided — building debug APK instead of release."
-            echo "   To sign release builds, add KEYSTORE_BASE64, KEYSTORE_PASSWORD,"
-            echo "   KEY_ALIAS, KEY_PASSWORD to repository secrets."
-            ./gradlew assembleDebug
+            echo "No keystore - building debug"
+            ./gradlew assembleDebug --info --stacktrace 2>&1
           else
-            ./gradlew assembleDebug
+            ./gradlew assembleDebug --info --stacktrace 2>&1
           fi
 
       - name: Locate APK
