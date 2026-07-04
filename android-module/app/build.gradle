@@ -17,7 +17,7 @@ android {
     signingConfigs {
         release {
             def ksPath = System.getenv("KEYSTORE_PATH")
-            if (ksPath != null) {
+            if (ksPath != null && !ksPath.isEmpty()) {
                 storeFile file(ksPath)
                 storePassword System.getenv("KEYSTORE_PASSWORD")
                 keyAlias System.getenv("KEY_ALIAS")
