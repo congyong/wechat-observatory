@@ -1,6 +1,6 @@
 name: Build Android APK
 
-on:
+'on':
   push:
     branches: [main, master, develop]
     tags:
@@ -44,14 +44,13 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Accept Android licenses
-        run: yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
-
-      - name: Gradle Wrapper
+      - name: Install Android SDK components
         run: |
-          if [ ! -f gradlew ]; then
-            gradle wrapper --gradle-version=8.9
-          fi
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager \
+            "platforms;android-35" \
+            "build-tools;35.0.0" \
+            "ndk;27.0.12077973" \
+            --sdk_root=$ANDROID_HOME 2>&1 | tail -5 || true
 
       - name: Cache Gradle
         uses: actions/cache@v4
